@@ -6,38 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.blog.dao.UserDAO;
-import com.example.blog.model.User;
+import com.example.blog.dao.BlogPostDAO;
+import com.example.blog.model.BlogPost;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class BlogPostServiceImpl implements BlogPostService{
 
 	@Autowired
-	private UserDAO userDAO;
+	private BlogPostDAO blogPostDAO;
 	
 	@Transactional
 	@Override
-	public List<User> get() {
-		return userDAO.get();
+	public List<BlogPost> get() {
+		return blogPostDAO.get();
 	}
 
 	@Transactional
 	@Override
-	public User get(int id) {
-		return userDAO.get(id);
+	public BlogPost get(int id) {
+		return blogPostDAO.get(id);
 	}
 
 	@Transactional
 	@Override
-	public void save(User user) {
-		userDAO.save(user);
+	public void save(BlogPost blogPost) {
+		blogPostDAO.save(blogPost);
 		
 	}
 
 	@Transactional
 	@Override
 	public void delete(int id) {
-		userDAO.delete(id);
+		blogPostDAO.delete(id);
 	}
 
 	

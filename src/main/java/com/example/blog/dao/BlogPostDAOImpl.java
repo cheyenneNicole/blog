@@ -8,40 +8,40 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.example.blog.model.User;
+import com.example.blog.model.BlogPost;
 
 @Repository
-public class UserDAOImpl implements UserDAO{
+public class BlogPostDAOImpl implements BlogPostDAO{
 
 	@Autowired
 	private EntityManager entityManager;
 	
 	@Override
-	public List<User> get() {
+	public List<BlogPost> get() {
 		Session currSession = entityManager.unwrap(Session.class);
-		Query<User> query = currSession.createQuery("from User", User.class);
-		List<User> list = query.getResultList();
+		Query<BlogPost> query = currSession.createQuery("from BlogPost", BlogPost.class);
+		List<BlogPost> list = query.getResultList();
 		return list;
 	}
 
 	@Override
-	public User get(int id) {
+	public BlogPost get(int id) {
 		Session currSession = entityManager.unwrap(Session.class);
-		User user = currSession.get(User.class, id);
-		return user;
+		BlogPost blogPost = currSession.get(BlogPost.class, id);
+		return blogPost;
 	}
 
 	@Override
-	public void save(User user) {
+	public void save(BlogPost blogPost) {
 		Session currSession = entityManager.unwrap(Session.class);
-		currSession.saveOrUpdate(user);
+		currSession.saveOrUpdate(blogPost);
 	}
 
 	@Override
 	public void delete(int id) {
 		Session currSession = entityManager.unwrap(Session.class);
-		User user = currSession.get(User.class, id);
-		currSession.delete(user);
+		BlogPost blogPost = currSession.get(BlogPost.class, id);
+		currSession.delete(blogPost);
 		
 	}
 

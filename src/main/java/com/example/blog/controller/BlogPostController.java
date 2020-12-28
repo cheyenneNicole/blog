@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.blog.model.BlogPost;
 import com.example.blog.service.BlogPostService;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class BlogPostController {
@@ -23,12 +24,12 @@ public class BlogPostController {
 	@Autowired
 	private BlogPostService blogPostService;
 	
-	@CrossOrigin
+	
 	@GetMapping("/post")
 	public List<BlogPost> get(){
 		return blogPostService.get();
 	}
-	@CrossOrigin
+	
 	@PostMapping("/post")
 	public BlogPost save(@RequestBody BlogPost blogPost) {
 		blogPostService.save(blogPost);
@@ -39,13 +40,13 @@ public class BlogPostController {
 	public BlogPost get(@PathVariable int id) {
 		return blogPostService.get(id);
 	}
-	@CrossOrigin
+	
 	@DeleteMapping("/post/{id}")
 	public String delete(@PathVariable int id) {
 		blogPostService.delete(id);
 		return "User was removed with id "+id;
 	}
-	@PutMapping("/post")
+	@PutMapping("/post/{id}")
 	public BlogPost update(@RequestBody BlogPost blogPost) {
 		blogPostService.save(blogPost);
 		return blogPost;

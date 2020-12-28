@@ -31,7 +31,7 @@ public class BlogPostServiceImpl implements BlogPostService{
 	@Override
 	public void save(BlogPost blogPost) {
 		blogPostDAO.save(blogPost);
-		
+	
 	}
 
 	@Transactional

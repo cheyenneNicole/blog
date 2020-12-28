@@ -3,18 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { useHistory } from "react-router-dom";
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect
-} from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,13 +23,8 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 export default function ButtonAppBar() {
-    let history = useHistory();
     const classes = useStyles();
-    function sayHello() {
-      history.push('/login')
-      console.log("Saying Hello");
-    }
-
+    const history = useHistory();
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -44,9 +33,11 @@ export default function ButtonAppBar() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              News
+              Blog of the Day
             </Typography>
-            <Button onClick={sayHello}color="inherit">Login</Button>
+            <Router>
+              <button onClick={() => history.push(`/login`)}>Login</button>
+            </Router>
           </Toolbar>
         </AppBar>
       </div> 

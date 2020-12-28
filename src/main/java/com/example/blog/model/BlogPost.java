@@ -2,38 +2,51 @@ package com.example.blog.model;
 
 import java.sql.Date;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name="entity_id")
 @Table(name="tb_blog")
-public class BlogPost {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
+public class BlogPost  extends com.example.blog.model.Entity{
+
 	@Column(name = "title")
 	private String title;
 	
 	@Column(name = "body")
 	private String body;
 
+	@Column(name = "likes")
+	private boolean likes;
+	
+	
+	public BlogPost() {
+	}
+
+
+	public BlogPost(String title, String body, boolean likes) {
+		this.title = title;
+		this.body = body;
+		this.likes = likes;
+	}
+
+
 	@Override
 	public String toString() {
-		return "BlogPost [id=" + id + ", title=" + title + ", body=" + body + "]";
+		return "BlogPost [title=" + title + ", body=" + body +likes +"]";
+	}
+	
+	
+	public boolean isLikes() {
+		return likes;
 	}
 
-	public int getId() {
-		return id;
+	public void setLikes(boolean likes) {
+		this.likes = likes;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getTitle() {
 		return title;

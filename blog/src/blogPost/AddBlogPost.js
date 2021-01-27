@@ -3,8 +3,8 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
-import APIService from "./APIService";
-import ViewPosts from './ViewPosts';
+import ViewPosts from '../blogPost/ViewPosts';
+import { getPostById, createPost, updatePost } from './APIService';
 
 export default class AddBlogPost extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export default class AddBlogPost extends React.Component {
       if(this.state.id === '_add'){
           return
       }else{
-          APIService.getPostById(this.state.id).then( (res) =>{
+          getPostById(this.state.id).then( (res) =>{
               let post = res.data;
               this.setState({title: post.title,
                   body: post.body
@@ -40,12 +40,13 @@ export default class AddBlogPost extends React.Component {
 
     // step 5
     if(this.state.id === '_add'){
-        APIService.createPost(post).then(res =>{
+        createPost(post).then(res =>{
             // window.location.reload();
+            console.log(post);
             this.props.history.push('/posts');
         });
     }else{
-        APIService.updatePost(post, this.state.id).then( res => {
+        updatePost(post, this.state.id).then( res => {
           this.props.history.push('/posts');
         });
     }

@@ -13,24 +13,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Comment implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name="entity_id")
-	private int entityID;
+	private int id;
 	
 	@Id
 	@Column(name="comments_id")
 	private int commentnumber;
 	
-	@Id
 	@Column(name="comment")
 	private String comment;
 
-	public int getEntityID() {
-		return entityID;
+	public int getId() {
+		return id;
 	}
 
-	public void setEntityID(int entityID) {
-		this.entityID = entityID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getCommentsID() {
@@ -49,8 +53,8 @@ public class Comment implements Serializable {
 		this.comment = comment;
 	}
 
-	public Comment(int entityID, int commentnumber, String comment) {
-		this.entityID = entityID;
+	public Comment(int id, int commentnumber, String comment) {
+		this.id = id;
 		this.commentnumber = commentnumber;
 		this.comment = comment;
 	}

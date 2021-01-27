@@ -46,9 +46,9 @@ public class CommentDAOImpl implements CommentDAO{
 	}
 
 	@Override
-	public Comment findByEntityId(int entityId) {
+	public Comment findById(int id) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		Comment theComment = currentSession.get(Comment.class, entityId);
+		Comment theComment = currentSession.get(Comment.class, id);
 		return theComment;
 	}
 

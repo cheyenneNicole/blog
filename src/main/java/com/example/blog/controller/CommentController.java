@@ -35,10 +35,10 @@ public class CommentController {
 	}
 	
 	@GetMapping("/{entityId}/comments")
-	public List<Comment> findCommentsByEntityId(@PathVariable int entityId){
+	public List<Comment> findCommentsById(@PathVariable int id){
 		return commentService.findAll()
 				.stream()
-				.filter(p -> p.getEntityID() == entityId)
+				.filter(p -> p.getId() == id)
 				.collect(Collectors.toList());
 	}
 	

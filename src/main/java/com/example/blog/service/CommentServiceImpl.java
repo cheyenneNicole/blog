@@ -37,8 +37,8 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	@Transactional
-	public Comment findByEntityId(int entityId) {
-		return commentDAO.findByEntityId(entityId);
+	public Comment findById(int id) {
+		return commentDAO.findById(id);
 	}
 
 	@Override

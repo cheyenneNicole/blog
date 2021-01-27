@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 @Table(name="tb_blog")
 public class BlogPost  extends com.example.blog.model.Entity{
 
+	
 	@Column(name = "title")
 	private String title;
 	

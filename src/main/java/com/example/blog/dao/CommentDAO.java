@@ -10,7 +10,7 @@ public interface CommentDAO {
 	
 	 Comment findByCommentId(int commentId);
 	
-	 Comment findByEntityId(int entityId);
+	 Comment findById(int id);
 	
 	 void save(Comment theComment);
 	

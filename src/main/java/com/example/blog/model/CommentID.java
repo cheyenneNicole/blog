@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 public class CommentID implements Serializable{
 
-	private int entityID;
+	private int id;
 	private int commentnumber;
 	
-	public int getEntityID() {
-		return entityID;
+	public int getId() {
+		return id;
 	}
-	public void setEntityID(int entityID) {
-		this.entityID = entityID;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public int getCommentnumber() {
 		return commentnumber;
@@ -19,8 +19,8 @@ public class CommentID implements Serializable{
 	public void setCommentnumber(int commentnumber) {
 		this.commentnumber = commentnumber;
 	}
-	public CommentID(int entityID, int commentnumber) {
-		this.entityID = entityID;
+	public CommentID(int id, int commentnumber) {
+		this.id = id;
 		this.commentnumber = commentnumber;
 	}
 	public CommentID() {

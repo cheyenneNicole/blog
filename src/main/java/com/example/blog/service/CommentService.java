@@ -10,7 +10,7 @@ public interface CommentService {
 
     public Comment findByCommentNumber(int commentNumber);
 
-    public Comment findByEntityId(int entityId);
+    public Comment findById(int id);
 
     public void save(Comment theComment);
 

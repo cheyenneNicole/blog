@@ -1,20 +1,36 @@
-import React, { Component } from 'react';
+import { React, Component } from 'react';
 import { login } from '../blogPost/APIService';
 import { Link } from 'react-router-dom';
 import { ACCESS_TOKEN } from '../constants';
 
-import { Form, Input, Button, Icon, notification } from 'antd';
+
+import { Form, Input, Button, notification } from 'antd';
 const FormItem = Form.Item;
 
-
 class Login extends Component {
+    render() {
+        const AntWrappedLoginForm = Form.create()(LoginForm)
+        return (
+            <div className="login-container">
+                <h1 className="page-title">Login</h1>
+                <div className="login-content">
+                    <AntWrappedLoginForm onLogin={this.props.onLogin} />
+                </div>
+            </div>
+        );
+    }
+}
+
+//Form.create()(MyForm)
+class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
-        event.preventDefault();   
+        console.log("INSIDE HANDLESUBMIT");
+        //event.preventDefault();   
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const loginRequest = Object.assign({}, values);
@@ -40,32 +56,35 @@ class Login extends Component {
     }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
-                <Form.Item name = "usernameOrEmail" rules = {[{ required: true, message: 'Please input your username or email!' }]}>
+            <Form onFinish={this.handleSubmit} className="login-form">
+                <FormItem>
+                {getFieldDecorator('usernameOrEmail', {
+                        rules: [{ required: true, message: 'Please input your username or email!' }],
+                    })(
                     <Input 
-                        prefix={<Icon type="user" />}
                         size="large"
                         name="usernameOrEmail" 
-                        placeholder="Username or Email" />    
-                </Form.Item>
-                <Form.Item name = "password" rules = {[{ required: true, message: 'Please input your Password!' }]}>
-                
+                        placeholder="Username or Email" />  
+                    )} 
+                    
+                </FormItem>
+                <FormItem>
                     <Input 
-                        prefix={<Icon type="lock" />}
                         size="large"
                         name="password" 
                         type="password" 
                         placeholder="Password"  />                        
-                </Form.Item>
-                <Form.Item>
+                
+                </FormItem>
+                <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
                     Or <Link to="/signup">register now!</Link>
-                </Form.Item>
+                </FormItem>
             </Form>
         );
     }
 }
-
 
 export default Login;

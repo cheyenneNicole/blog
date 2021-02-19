@@ -19,7 +19,7 @@ public class User {
 	@Column(name = "username")
 	private String userName;
 
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
 	private String password;
 
@@ -33,7 +33,7 @@ public class User {
 	private String email;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "users_roles", 
+	@JoinTable(name = "user_roles", 
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Collection<Role> roles;

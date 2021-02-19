@@ -1,7 +1,6 @@
 package com.example.blog.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,71 +28,75 @@ import com.example.blog.service.UserService;
         jsr250Enabled = true,
         prePostEnabled = true
 )
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-		@Autowired
-	 	private UserService userService;
+    // add a reference to our security data source
+    @Autowired
+    private UserService userService;
 
-	    @Autowired
-	    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-	    @Override
-	    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-	        auth.authenticationProvider(authenticationProvider());
-	    }
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-	    @Override
-	    protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-	        http
-	                .cors()
-	                    .and()
-	                .csrf()
-	                    .disable()
-	                .exceptionHandling()
-	                    .authenticationEntryPoint(authenticationEntryPoint)
-	                    .and()
-	                .sessionManagement()
-	                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	                    .and()
-	                .authorizeRequests()
-	                .antMatchers(HttpMethod.POST, "/api/post").authenticated()
-	                .antMatchers(HttpMethod.POST, "/api/post/**").authenticated()
-	                .antMatchers(HttpMethod.PUT, "/api/post").authenticated()
-	                .antMatchers(HttpMethod.PUT, "/api/post/**").authenticated()
-	                .antMatchers(HttpMethod.DELETE, "/api/post/**").hasRole("ADMIN");
+        http
+                .cors()
+                    .and()
+                .csrf()
+                    .disable()
+                .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .and()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                .authorizeRequests()
+                //.antMatchers(HttpMethod.GET, "/api/videos").hasRole("EMPLOYEE")
+                //.antMatchers(HttpMethod.GET, "/api/videos/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/posts").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/posts").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/posts/**").hasRole("ADMIN");
 
-	        // Add our custom JWT security filter
-	        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // Add our custom JWT security filter
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-	    }
+    }
 
-	    //beans
-	    //bcrypt bean definition
+    //beans
+    //bcrypt bean definition
 
-	    @Bean
-	    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-	        return new JwtAuthenticationFilter();
-	    }
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
 
-	    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-	    @Override
-	    public AuthenticationManager authenticationManagerBean() throws Exception {
-	        return super.authenticationManagerBean();
-	    }
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-	    @Bean
-	    public BCryptPasswordEncoder passwordEncoder() {
-	        return new BCryptPasswordEncoder();
-	    }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	    //authenticationProvider bean definition
-	    @Bean
-	    public DaoAuthenticationProvider authenticationProvider() {
-	        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-	        auth.setUserDetailsService(userService); //set the custom user details service
-	        auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
-	        return auth;
-	    }
+    //authenticationProvider bean definition
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userService); //set the custom user details service
+        auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
+        return auth;
+    }
+
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.blog.model.BlogPost;
 import com.example.blog.service.BlogPostService;
 
-@CrossOrigin(maxAge = 3600)
+
 @RestController
 @RequestMapping("/api")
 public class BlogPostController {

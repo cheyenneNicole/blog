@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { signup, checkUsernameAvailability, checkEmailAvailability } from '../blogPost/APIService';
+import { signup} from '../blogPost/APIService';
 import { Link } from 'react-router-dom';
 import { 
     NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
@@ -15,8 +15,11 @@ class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: {
+            firstName: {
                 value: ''
+            },
+            lastName:{
+                value:''
             },
             username: {
                 value: ''
@@ -30,9 +33,8 @@ class Signup extends Component {
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validateUsernameAvailability = this.validateUsernameAvailability.bind(this);
-        this.validateEmailAvailability = this.validateEmailAvailability.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     handleInputChange(event, validationFun) {
@@ -47,12 +49,12 @@ class Signup extends Component {
             }
         });
     }
-
     handleSubmit(event) {
-        event.preventDefault();
+        //event.preventDefault();
     
         const signupRequest = {
-            name: this.state.name.value,
+            firstName: this.state.firstName.value,
+            lastName: this.state.lastName.value,
             email: this.state.email.value,
             username: this.state.username.value,
             password: this.state.password.value
@@ -62,7 +64,8 @@ class Signup extends Component {
             notification.success({
                 message: 'Polling App',
                 description: "Thank you! You're successfully registered. Please Login to continue!",
-            });          
+            });
+            console.log("Where am i");     
             this.props.history.push("/login");
         }).catch(error => {
             notification.error({
@@ -73,30 +76,54 @@ class Signup extends Component {
     }
 
     isFormInvalid() {
-        return !(this.state.name.validateStatus === 'success' &&
+        return !(this.state.firstName.validateStatus === 'success' &&
+        this.state.lastName.validateStatus === 'success' &&
             this.state.username.validateStatus === 'success' &&
             this.state.email.validateStatus === 'success' &&
             this.state.password.validateStatus === 'success'
         );
     }
-
+    
     render() {
+        
+          const help = ()=> {
+            console.log("Onsubmit")
+          }
+          const onFinishFailed = (errorInfo) => {
+            console.log("Failed:", errorInfo);
+          };
         return (
             <div className="signup-container">
                 <h1 className="page-title">Sign Up</h1>
                 <div className="signup-content">
-                    <Form onSubmit={this.handleSubmit} className="signup-form">
-                        <FormItem 
-                            label="Full Name"
-                            validateStatus={this.state.name.validateStatus}
-                            help={this.state.name.errorMsg}>
+                    <Form 
+                        //onSubmit={this.handleSubmit}
+                        name="basic"
+                        onFinish={this.handleSubmit}
+                        onFinishFailed={onFinishFailed}>
+                        <FormItem
+                            label="First Name"
+                            validateStatus={this.state.firstName.validateStatus}
+                            help={this.state.firstName.errorMsg}>
                             <Input 
                                 size="large"
-                                name="name"
+                                name="firstName"
                                 autoComplete="off"
-                                placeholder="Your full name"
-                                value={this.state.name.value} 
-                                onChange={(event) => this.handleInputChange(event, this.validateName)} />    
+                                placeholder="First Name:"
+                                value={this.state.firstName.value} 
+                                onChange={(event) => this.handleInputChange(event, this.validateFirstName)} />    
+                        </FormItem>
+                        <FormItem
+                            label="Full Name"
+                            validateStatus={this.state.lastName.validateStatus}
+                            help={this.state.lastName.errorMsg}>
+                            <Input 
+                                size="large"
+                                name="lastName"
+                                autoComplete="off"
+                                placeholder="Last Name:"
+                                value={this.state.lastName.value} 
+                                onChange={(event) => this.handleInputChange(event, this.validateLastName)} />    
                         </FormItem>
                         <FormItem label="Username"
                             hasFeedback
@@ -108,7 +135,6 @@ class Signup extends Component {
                                 autoComplete="off"
                                 placeholder="A unique username"
                                 value={this.state.username.value} 
-                                onBlur={this.validateUsernameAvailability}
                                 onChange={(event) => this.handleInputChange(event, this.validateUsername)} />    
                         </FormItem>
                         <FormItem 
@@ -123,7 +149,7 @@ class Signup extends Component {
                                 autoComplete="off"
                                 placeholder="Your email"
                                 value={this.state.email.value} 
-                                onBlur={this.validateEmailAvailability}
+                                
                                 onChange={(event) => this.handleInputChange(event, this.validateEmail)} />    
                         </FormItem>
                         <FormItem 
@@ -144,7 +170,10 @@ class Signup extends Component {
                                 htmlType="submit" 
                                 size="large" 
                                 className="signup-form-button"
-                                disabled={this.isFormInvalid()}>Sign up</Button>
+                                disabled={this.isFormInvalid()}
+                                >
+                                Sign up
+                            </Button>
                             Already registed? <Link to="/login">Login now!</Link>
                         </FormItem>
                     </Form>
@@ -152,16 +181,13 @@ class Signup extends Component {
             </div>
         );
     }
-
-    // Validation Functions
-
-    validateName = (name) => {
-        if(name.length < NAME_MIN_LENGTH) {
+    validateLastName = (lastName) => {
+        if(lastName.length < NAME_MIN_LENGTH) {
             return {
                 validateStatus: 'error',
                 errorMsg: `Name is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)`
             }
-        } else if (name.length > NAME_MAX_LENGTH) {
+        } else if (lastName.length > NAME_MAX_LENGTH) {
             return {
                 validationStatus: 'error',
                 errorMsg: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters allowed.)`
@@ -173,7 +199,24 @@ class Signup extends Component {
               };            
         }
     }
-
+    validateFirstName = (firstName) => {
+        if(firstName.length < NAME_MIN_LENGTH) {
+            return {
+                validateStatus: 'error',
+                errorMsg: `Name is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)`
+            }
+        } else if (firstName.length > NAME_MAX_LENGTH) {
+            return {
+                validationStatus: 'error',
+                errorMsg: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters allowed.)`
+            }
+        } else {
+            return {
+                validateStatus: 'success',
+                errorMsg: null,
+              };            
+        }
+    }
     validateEmail = (email) => {
         if(!email) {
             return {
@@ -198,7 +241,7 @@ class Signup extends Component {
         }
 
         return {
-            validateStatus: null,
+            validateStatus: 'success',
             errorMsg: null
         }
     }
@@ -216,7 +259,7 @@ class Signup extends Component {
             }
         } else {
             return {
-                validateStatus: null,
+                validateStatus: 'success',
                 errorMsg: null
             }
         }
@@ -244,38 +287,8 @@ class Signup extends Component {
                 errorMsg: null
             }
         });
-
-        checkUsernameAvailability(usernameValue)
-        .then(response => {
-            if(response.available) {
-                this.setState({
-                    username: {
-                        value: usernameValue,
-                        validateStatus: 'success',
-                        errorMsg: null
-                    }
-                });
-            } else {
-                this.setState({
-                    username: {
-                        value: usernameValue,
-                        validateStatus: 'error',
-                        errorMsg: 'This username is already taken'
-                    }
-                });
-            }
-        }).catch(error => {
-            // Marking validateStatus as success, Form will be recchecked at server
-            this.setState({
-                username: {
-                    value: usernameValue,
-                    validateStatus: 'success',
-                    errorMsg: null
-                }
-            });
-        });
     }
-
+        
     validateEmailAvailability() {
         // First check for client side errors in email
         const emailValue = this.state.email.value;
@@ -299,35 +312,6 @@ class Signup extends Component {
             }
         });
 
-        checkEmailAvailability(emailValue)
-        .then(response => {
-            if(response.available) {
-                this.setState({
-                    email: {
-                        value: emailValue,
-                        validateStatus: 'success',
-                        errorMsg: null
-                    }
-                });
-            } else {
-                this.setState({
-                    email: {
-                        value: emailValue,
-                        validateStatus: 'error',
-                        errorMsg: 'This Email is already registered'
-                    }
-                });
-            }
-        }).catch(error => {
-            // Marking validateStatus as success, Form will be recchecked at server
-            this.setState({
-                email: {
-                    value: emailValue,
-                    validateStatus: 'success',
-                    errorMsg: null
-                }
-            });
-        });
     }
 
     validatePassword = (password) => {
